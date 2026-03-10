@@ -1,0 +1,55 @@
+{
+  "population": {
+    "muscat_2024": 1499549,
+    "muscat_2023": 1455680,
+    "muscat_2022": 1720000,
+    "oman_2024": 5268000,
+    "muscat_share_of_oman": 0.297,
+    "muscat_growth_2023_2024": 0.030,
+    "oman_growth_2023": 0.061,
+    "oman_growth_2024": 0.020,
+    "omani_citizens_muscat_2024": 584092,
+    "expats_muscat_2024": 915457,
+    "omani_share_muscat": 0.39,
+    "sources": [
+      "NCSI via Muscat Daily (Jan 2025): 1,499,549 end-2024, 3% growth",
+      "NCSI via Oman Observer (Oct 2023): 6.1% national growth Q3 2023",
+      "NCSI via Oman Observer (Jan 2024): Muscat = 29.7% of national, 1,546,667",
+      "Wikipedia/NCSI: 1.72M in 2022",
+      "OmanQ (Mar 2025): Muscat 1,499,549, Omanis 584,092 (39%)"
+    ]
+  },
+  "healthcare": {
+    "oman_total_hospitals_2023": 92,
+    "oman_total_beds_2023": 7691,
+    "moh_hospitals_2023": 50,
+    "moh_beds_2023": 5024,
+    "muscat_hospitals_estimate": 15,
+    "muscat_beds_estimate": 2500,
+    "who_benchmark_beds_per_1000": 3.0,
+    "oman_beds_per_1000_2023": 1.46,
+    "new_hospitals_under_construction": 11,
+    "sources": [
+      "ONA (Aug 2024): 92 hospitals, 7,691 beds in Oman total",
+      "Grokipedia: MoH manages 50 hospitals with 5,024 beds (end 2023)",
+      "WHO benchmark: 3.0 beds per 1,000 population (global median)",
+      "Times of Oman / Oman Observer: 11 new hospitals under construction",
+      "Estimate: Muscat ~32% of total beds based on population share + capital concentration"
+    ]
+  },
+  "education": {
+    "oman_schools_total": 67263,
+    "oman_students_total": 710000,
+    "international_schools_oman": 46,
+    "international_students": 61704,
+    "muscat_international_schools": 21,
+    "school_age_share_of_population": 0.20,
+    "students_per_school_avg": 400,
+    "teacher_student_ratio_benchmark": 20,
+    "sources": [
+      "Oman Observer (Mar 2023): 710,000 students, 20% of population",
+      "Oman Observer (Aug 2024): 46 international schools, 61,704 students, 21 in Muscat",
+      "Benchmark: UNESCO recommends 20:1 student-teacher ratio"
+    ]
+  }
+}
