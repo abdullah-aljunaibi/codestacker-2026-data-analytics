@@ -1,0 +1,114 @@
+{
+  "baseline": {
+    "year": 2024,
+    "population": 1499549
+  },
+  "historical": {
+    "2020": 1340000,
+    "2021": 1380000,
+    "2022": 1720000,
+    "2023": 1455680,
+    "2024": 1499549
+  },
+  "scenarios": {
+    "Base Case": {
+      "annual_growth_rate": 0.025,
+      "description": "Moderate growth assuming Oman Vision 2040 diversification proceeds steadily",
+      "assumptions": [
+        "Oman Vision 2040 diversification creates steady job growth",
+        "Expat share stabilizes around 60%",
+        "Fertility rate follows GCC declining trend (2.5 \u2192 2.2 by 2040)",
+        "No major economic shocks or oil price collapse",
+        "Net migration +15,000/year average"
+      ],
+      "pop_2030": 1739017,
+      "pop_2040": 2226088,
+      "total_growth_pct": 48.5,
+      "yearly": {
+        "2024": 1499549,
+        "2025": 1537037,
+        "2026": 1575463,
+        "2027": 1614850,
+        "2028": 1655221,
+        "2029": 1696602,
+        "2030": 1739017,
+        "2031": 1782492,
+        "2032": 1827054,
+        "2033": 1872731,
+        "2034": 1919549,
+        "2035": 1967538,
+        "2036": 2016726,
+        "2037": 2067144,
+        "2038": 2118823,
+        "2039": 2171794,
+        "2040": 2226088
+      }
+    },
+    "High Growth": {
+      "annual_growth_rate": 0.04,
+      "description": "Rapid growth driven by successful economic diversification and megaprojects",
+      "assumptions": [
+        "Muscat becomes regional logistics/tech hub",
+        "Major FDI inflows from Oman Investment Authority projects",
+        "Expat share rises to 65% as labor demand surges",
+        "Tourism sector doubles (Oman 2040 target: 11M visitors)",
+        "Net migration +30,000/year average"
+      ],
+      "pop_2030": 1897407,
+      "pop_2040": 2808627,
+      "total_growth_pct": 87.3,
+      "yearly": {
+        "2024": 1499549,
+        "2025": 1559530,
+        "2026": 1621912,
+        "2027": 1686788,
+        "2028": 1754260,
+        "2029": 1824430,
+        "2030": 1897407,
+        "2031": 1973304,
+        "2032": 2052236,
+        "2033": 2134325,
+        "2034": 2219698,
+        "2035": 2308486,
+        "2036": 2400826,
+        "2037": 2496859,
+        "2038": 2596733,
+        "2039": 2700603,
+        "2040": 2808627
+      }
+    },
+    "Low Growth": {
+      "annual_growth_rate": 0.015,
+      "description": "Slower growth due to economic headwinds and Omanization pressure",
+      "assumptions": [
+        "Oil prices remain below $60/barrel long-term",
+        "Aggressive Omanization reduces expat workforce by 20%",
+        "Fertility continues declining faster than expected",
+        "Regional competition (UAE, Saudi) diverts investment",
+        "Net migration near zero or slightly negative"
+      ],
+      "pop_2030": 1639671,
+      "pop_2040": 1902906,
+      "total_growth_pct": 26.9,
+      "yearly": {
+        "2024": 1499549,
+        "2025": 1522042,
+        "2026": 1544872,
+        "2027": 1568045,
+        "2028": 1591566,
+        "2029": 1615440,
+        "2030": 1639671,
+        "2031": 1664266,
+        "2032": 1689230,
+        "2033": 1714569,
+        "2034": 1740287,
+        "2035": 1766392,
+        "2036": 1792888,
+        "2037": 1819781,
+        "2038": 1847078,
+        "2039": 1874784,
+        "2040": 1902906
+      }
+    }
+  }
+}
