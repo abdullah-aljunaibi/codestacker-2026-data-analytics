@@ -1,0 +1,81 @@
+{
+  "healthcare": {
+    "current_beds": 2500,
+    "planned_additions": 400,
+    "total_after_expansion": 2900,
+    "benchmarks": {
+      "WHO": 3.0,
+      "GCC_avg": 2.0
+    },
+    "scenarios": {
+      "Base Case": {
+        "pop_2040": 2226088,
+        "demand_who_2040": 6678,
+        "demand_gcc_2040": 4452,
+        "gap_who_2040": 3778,
+        "gap_gcc_2040": 1552,
+        "breakpoint_gcc": 2024
+      },
+      "High Growth": {
+        "pop_2040": 2808627,
+        "demand_who_2040": 8425,
+        "demand_gcc_2040": 5617,
+        "gap_who_2040": 5525,
+        "gap_gcc_2040": 2717,
+        "breakpoint_gcc": 2024
+      },
+      "Low Growth": {
+        "pop_2040": 1902906,
+        "demand_who_2040": 5708,
+        "demand_gcc_2040": 3805,
+        "gap_who_2040": 2808,
+        "gap_gcc_2040": 905,
+        "breakpoint_gcc": 2024
+      }
+    }
+  },
+  "education": {
+    "current_schools": 330,
+    "current_capacity": 297000,
+    "school_age_share": 0.2,
+    "benchmarks": {
+      "current_density": 900,
+      "quality_target": 600
+    },
+    "scenarios": {
+      "Base Case": {
+        "students_2024": 299909,
+        "students_2040": 445217,
+        "schools_needed_current": 494,
+        "schools_needed_quality": 742,
+        "gap_current": 164,
+        "gap_quality": 412,
+        "teachers_needed": 29681,
+        "teacher_gap": 14685,
+        "breakpoint": 2024
+      },
+      "High Growth": {
+        "students_2024": 299909,
+        "students_2040": 561725,
+        "schools_needed_current": 624,
+        "schools_needed_quality": 936,
+        "gap_current": 294,
+        "gap_quality": 606,
+        "teachers_needed": 37448,
+        "teacher_gap": 22452,
+        "breakpoint": 2024
+      },
+      "Low Growth": {
+        "students_2024": 299909,
+        "students_2040": 380581,
+        "schools_needed_current": 422,
+        "schools_needed_quality": 634,
+        "gap_current": 92,
+        "gap_quality": 304,
+        "teachers_needed": 25372,
+        "teacher_gap": 10376,
+        "breakpoint": 2024
+      }
+    }
+  }
+}
