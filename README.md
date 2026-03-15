@@ -95,12 +95,13 @@ Run the automated test suite with:
 python3 -m pytest tests/ -v
 ```
 
-The repository currently includes 19 tests covering:
+The repository currently includes 22 tests covering:
 
 - Population projection logic
 - Infrastructure demand formulas
 - Water capacity calculations
 - Script execution and output generation
+- Data drift detection (sources.json ↔ model ↔ docs consistency)
 
 To validate the Streamlit app syntax without launching it:
 
@@ -142,7 +143,7 @@ python3 -c "import ast; ast.parse(open('app.py').read()); print('Streamlit synta
 
 ## Data Sources
 
-The model draws on public data and benchmarks, with detailed references stored in `data/sources.json` and expanded discussion in [docs/technical_appendix.md](/home/abdullah/.openclaw/workspace/codestacker-2026-data-analytics/docs/technical_appendix.md).
+The model draws on public data and benchmarks, with detailed references stored in `data/sources.json` and expanded discussion in [docs/technical_appendix.md](docs/technical_appendix.md).
 
 - `NCSI`: Muscat and national population totals, growth context, and population composition
 - `WHO`: hospital bed and minimum domestic water access benchmarks
@@ -185,8 +186,8 @@ Each sector compares modeled 2040 demand to current and planned capacity, then r
 
 ## Documentation
 
-- Executive summary: [docs/executive_summary.md](/home/abdullah/.openclaw/workspace/codestacker-2026-data-analytics/docs/executive_summary.md)
-- Technical appendix: [docs/technical_appendix.md](/home/abdullah/.openclaw/workspace/codestacker-2026-data-analytics/docs/technical_appendix.md)
+- Executive summary: [docs/executive_summary.md](docs/executive_summary.md)
+- Technical appendix: [docs/technical_appendix.md](docs/technical_appendix.md)
 
 ## Author and Challenge Attribution
 

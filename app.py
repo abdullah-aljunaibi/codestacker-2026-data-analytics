@@ -3,12 +3,23 @@ Muscat 2040: Growth & Infrastructure Interactive Model
 Streamlit Dashboard — CodeStacker 2026 Data Analytics Challenge
 Author: Abdullah Al Junaibi
 """
+import json
+from pathlib import Path
+
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 st.set_page_config(page_title="Muscat 2040 — Growth & Infrastructure", layout="wide", page_icon="🏙️")
+
+# ── LOAD GENERATED DATA (single source of truth for defaults) ──
+_data_dir = Path(__file__).parent / "data"
+_sources = json.loads((_data_dir / "sources.json").read_text()) if (_data_dir / "sources.json").exists() else {}
+_pop_defaults = _sources.get("population", {})
+_health_defaults = _sources.get("healthcare", {})
+_edu_defaults = _sources.get("education", {})
+_water_defaults = _sources.get("water", {})
 
 # ── TITLE ──
 st.title("🏙️ Muscat 2040: Growth & Infrastructure Model")
@@ -20,28 +31,34 @@ st.sidebar.header("📊 Model Assumptions")
 st.sidebar.markdown("Adjust these to see how results change dynamically.")
 
 st.sidebar.subheader("Population")
-baseline_pop = st.sidebar.number_input("Baseline Population (2024)", value=1_499_549, step=10000, format="%d")
+baseline_pop = st.sidebar.number_input("Baseline Population (2024)", value=_pop_defaults.get("muscat_2024", 1_499_549), step=10000, format="%d")
+low_growth = st.sidebar.slider("Low Growth Rate (%/yr)", 0.5, 4.0, 1.5, 0.1) / 100
 base_growth = st.sidebar.slider("Base Case Growth Rate (%/yr)", 0.5, 6.0, 2.5, 0.1) / 100
 high_growth = st.sidebar.slider("High Growth Rate (%/yr)", 0.5, 8.0, 4.0, 0.1) / 100
-low_growth = st.sidebar.slider("Low Growth Rate (%/yr)", 0.5, 4.0, 1.5, 0.1) / 100
 migration_adj = st.sidebar.slider("Net Migration Adjustment (%)", -50, 100, 0, 5)
 
+# Enforce scenario ordering: Low ≤ Base ≤ High
+if low_growth > base_growth:
+    st.sidebar.warning("⚠️ Low growth rate exceeds base case — results may be misleading.")
+if base_growth > high_growth:
+    st.sidebar.warning("⚠️ Base case exceeds high growth rate — results may be misleading.")
+
 st.sidebar.subheader("Healthcare")
-beds_current = st.sidebar.number_input("Current Hospital Beds (Muscat)", value=2500, step=100)
+beds_current = st.sidebar.number_input("Current Hospital Beds (Muscat)", value=_health_defaults.get("muscat_beds_estimate", 2500), step=100)
 beds_planned = st.sidebar.number_input("Planned Bed Additions (by 2028)", value=400, step=50)
-beds_benchmark = st.sidebar.slider("Target Beds per 1,000 People", 1.0, 5.0, 3.0, 0.1)
+beds_benchmark = st.sidebar.slider("Target Beds per 1,000 People", 1.0, 5.0, float(_health_defaults.get("who_benchmark_beds_per_1000", 3.0)), 0.1)
 
 st.sidebar.subheader("Education")
 school_age_pct = st.sidebar.slider("School-Age Population (%)", 10, 30, 20, 1) / 100
-schools_current = st.sidebar.number_input("Current Schools (Muscat)", value=330, step=10)
-students_per_school = st.sidebar.slider("Students per School (current)", 400, 1200, 900, 50)
-quality_target = st.sidebar.slider("Quality Target (students/school)", 300, 800, 600, 50)
-teacher_ratio = st.sidebar.slider("Target Teacher:Student Ratio", 10, 30, 15, 1)
+schools_current = st.sidebar.number_input("Current Schools (Muscat)", value=_edu_defaults.get("muscat_schools_estimate", 330), step=10)
+students_per_school = st.sidebar.slider("Students per School (current)", 400, 1200, _edu_defaults.get("students_per_school_current_density", 900), 50)
+quality_target = st.sidebar.slider("Quality Target (students/school)", 300, 800, _edu_defaults.get("students_per_school_quality_target", 600), 50)
+teacher_ratio = st.sidebar.slider("Target Teacher:Student Ratio", 10, 30, _edu_defaults.get("teacher_student_ratio_benchmark", 15), 1)
 
 st.sidebar.subheader("Water & Utilities")
-water_capacity_current = st.sidebar.number_input("Current Water Capacity (MLD)", value=280, step=10)
-water_per_capita = st.sidebar.slider("Per-Capita Water Use (L/day)", 100, 400, 180, 5)
-water_planned_additions = st.sidebar.number_input("Planned Capacity Additions (MLD, by 2025)", value=300, step=10)
+water_capacity_current = st.sidebar.number_input("Current Water Capacity (MLD)", value=_water_defaults.get("muscat_effective_capacity_mld_2024", 280), step=10)
+water_per_capita = st.sidebar.slider("Per-Capita Water Use (L/day)", 100, 400, _water_defaults.get("per_capita_consumption_lpd", 180), 5)
+water_planned_additions = st.sidebar.number_input("Planned Capacity Additions (MLD, by 2025)", value=_water_defaults.get("al_ghubrah_3_iwp_planned_mld", 300), step=10)
 water_safety_factor = st.sidebar.slider("Peak/Loss Safety Factor", 1.00, 1.50, 1.15, 0.01)
 
 # ── COMPUTE PROJECTIONS ──

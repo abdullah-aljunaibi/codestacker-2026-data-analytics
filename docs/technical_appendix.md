@@ -210,7 +210,7 @@ The repository uses a simple script-to-JSON-to-dashboard pipeline.
 
 ## 12. Model Validation Approach
 
-Validation is implemented through the automated test suite in `tests/`. The repository currently includes **19 tests** that check:
+Validation is implemented through the automated test suite in `tests/`. The repository currently includes **22 tests** that check:
 
 - Baseline population integrity
 - Growth formula correctness
