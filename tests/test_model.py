@@ -149,3 +149,32 @@ def test_output_files_created(repo_root):
     ]
     for file_path in expected_files:
         assert file_path.exists()
+
+
+# ── Drift-detection tests ──
+
+def test_sources_education_matches_model(sources_json, infrastructure_analysis_json):
+    """Ensure sources.json education assumptions match the analysis model."""
+    src = sources_json["education"]
+    assert src["students_per_school_current_density"] == 900
+    assert src["students_per_school_quality_target"] == 600
+    assert src["teacher_student_ratio_benchmark"] == 15
+    assert src["school_age_share_of_population"] == 0.20
+
+
+def test_water_docs_match_generated_output(infrastructure_analysis_json):
+    """Ensure generated water output has expected values (catches doc drift)."""
+    water = infrastructure_analysis_json["water"]["scenarios"]
+    assert water["Base Case"]["demand_2040_mld"] == pytest.approx(460.8, abs=0.5)
+    assert water["High Growth"]["demand_2040_mld"] == pytest.approx(581.4, abs=0.5)
+    assert water["Low Growth"]["demand_2040_mld"] == pytest.approx(393.9, abs=0.5)
+    assert water["Base Case"]["gap_2040_mld"] == pytest.approx(-119.2, abs=0.5)
+
+
+def test_sources_water_matches_model(sources_json, infrastructure_analysis_json):
+    """Ensure sources.json water values match infrastructure analysis."""
+    src = sources_json["water"]
+    infra = infrastructure_analysis_json["water"]
+    assert src["muscat_effective_capacity_mld_2024"] == infra["current_capacity_mld"]
+    assert src["al_ghubrah_3_iwp_planned_mld"] == infra["planned_additions_mld"]
+    assert src["per_capita_consumption_lpd"] == infra["assumptions"]["per_capita_lpd"]

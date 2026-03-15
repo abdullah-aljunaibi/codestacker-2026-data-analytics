@@ -38,14 +38,15 @@
     ]
   },
   "education": {
-    "oman_schools_total": 67263,
+    "muscat_schools_estimate": 330,
     "oman_students_total": 710000,
     "international_schools_oman": 46,
     "international_students": 61704,
     "muscat_international_schools": 21,
     "school_age_share_of_population": 0.20,
-    "students_per_school_avg": 400,
-    "teacher_student_ratio_benchmark": 20,
+    "students_per_school_current_density": 900,
+    "students_per_school_quality_target": 600,
+    "teacher_student_ratio_benchmark": 15,
     "sources": [
       "Oman Observer (Mar 2023): 710,000 students, 20% of population",
       "Oman Observer (Aug 2024): 46 international schools, 61,704 students, 21 in Muscat",

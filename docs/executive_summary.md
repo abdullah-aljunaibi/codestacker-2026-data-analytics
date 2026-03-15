@@ -58,9 +58,9 @@ The water model estimates Muscat's effective desalinated supply at **280 MLD in 
 
 | Scenario | Water Demand 2040 | Capacity 2040 | Gap / Reserve |
 |----------|------------------:|--------------:|--------------:|
-| Low Growth | 393.0 MLD | 580 MLD | **+187.0 MLD reserve** |
-| Base Case | 462.4 MLD | 580 MLD | **+117.6 MLD reserve** |
-| High Growth | 581.7 MLD | 580 MLD | **-1.7 MLD deficit** |
+| Low Growth | 393.9 MLD | 580 MLD | **+186.1 MLD reserve** |
+| Base Case | 460.8 MLD | 580 MLD | **+119.2 MLD reserve** |
+| High Growth | 581.4 MLD | 580 MLD | **-1.4 MLD deficit** |
 
 **Critical finding:** Water is the strongest-performing sector under the base case because planned capacity materially changes the outlook. However, that result depends on delivery of the announced supply expansion and leaves far less buffer under high growth.
 
