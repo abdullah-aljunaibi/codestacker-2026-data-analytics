@@ -101,7 +101,7 @@ The repository currently includes 22 tests covering:
 - Infrastructure demand formulas
 - Water capacity calculations
 - Script execution and output generation
-- Data drift detection (sources.json ↔ model ↔ docs consistency)
+- Data drift detection (sources.json ↔ model output value consistency)
 
 To validate the Streamlit app syntax without launching it:
 

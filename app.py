@@ -49,7 +49,7 @@ beds_planned = st.sidebar.number_input("Planned Bed Additions (by 2028)", value=
 beds_benchmark = st.sidebar.slider("Target Beds per 1,000 People", 1.0, 5.0, float(_health_defaults.get("who_benchmark_beds_per_1000", 3.0)), 0.1)
 
 st.sidebar.subheader("Education")
-school_age_pct = st.sidebar.slider("School-Age Population (%)", 10, 30, 20, 1) / 100
+school_age_pct = st.sidebar.slider("School-Age Population (%)", 10, 30, int(_edu_defaults.get("school_age_share_of_population", 0.20) * 100), 1) / 100
 schools_current = st.sidebar.number_input("Current Schools (Muscat)", value=_edu_defaults.get("muscat_schools_estimate", 330), step=10)
 students_per_school = st.sidebar.slider("Students per School (current)", 400, 1200, _edu_defaults.get("students_per_school_current_density", 900), 50)
 quality_target = st.sidebar.slider("Quality Target (students/school)", 300, 800, _edu_defaults.get("students_per_school_quality_target", 600), 50)
