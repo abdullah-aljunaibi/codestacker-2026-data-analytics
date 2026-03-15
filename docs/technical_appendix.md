@@ -2,7 +2,15 @@
 
 ---
 
-## 1. Data Sources
+## 1. Purpose
+
+This appendix documents the data, assumptions, formulas, validation checks, and output pipeline used in the Muscat 2040 growth and infrastructure model. It supports the executive summary and the Streamlit dashboard with reproducible technical detail.
+
+The model is designed for strategic planning and challenge submission purposes. It is not an official forecast, engineering design, or fiscal model.
+
+---
+
+## 2. Data Sources
 
 | Source | Data Used | URL |
 |--------|-----------|-----|
@@ -17,111 +25,283 @@
 | Oman Observer (Mar 2023) | 710,000 students nationally = 20% of population | https://www.omanobserver.om/article/1133871/ |
 | Oman Observer (Aug 2024) | 46 international schools, 61,704 students, 21 in Muscat | https://www.omanobserver.om/article/1157275/ |
 | WHO | Hospital beds benchmark: 3.0 per 1,000 population | https://www.who.int/data/gho |
-| UNESCO | Quality education benchmarks: teacher ratios, class sizes | https://uis.unesco.org/ |
+| UNESCO | Education quality benchmarks | https://uis.unesco.org/ |
+| PAEW annual reporting | Domestic water consumption assumptions | Referenced in `data/sources.json` |
+| OPWP planning statements | Desalination capacity and planned additions | Referenced in `data/sources.json` |
 
 ---
 
-## 2. Assumptions Table
+## 3. Scope
+
+The model covers:
+
+- Population growth from 2024 to 2040
+- Healthcare demand through hospital beds
+- Education demand through schools and teachers
+- Water demand through desalinated supply capacity
+- Sensitivity analysis around growth assumptions
+- Dashboard consumption through JSON outputs
+
+The model does not cover transport, housing, wastewater, electricity, or wilayat-level spatial allocation.
+
+---
+
+## 4. Assumptions Table
 
 | Assumption | Value | Justification |
 |-----------|-------|---------------|
 | Baseline population | 1,499,549 (end 2024) | NCSI official figure |
 | Base growth rate | 2.5%/yr | Slightly below recent 3.0%, accounting for maturation |
 | High growth rate | 4.0%/yr | Reflects successful Vision 2040 diversification |
-| Low growth rate | 1.5%/yr | Aggressive Omanization, low oil prices scenario |
+| Low growth rate | 1.5%/yr | Omanization and slower migration scenario |
 | Expat share | ~61% | NCSI 2024 data |
-| Muscat hospital beds | ~2,500 | Estimated from national total (7,691) × Muscat share (~32%) + known major hospitals (Royal 590, SQUH 524, Khoula 360, Al Nahda 300) |
-| Planned bed additions | 400 by 2028 | Based on announced hospital construction projects in Muscat area |
-| WHO beds benchmark | 3.0 per 1,000 | WHO global standard |
-| GCC average beds | 2.0 per 1,000 | Regional average (UAE 1.8, Saudi 2.2, Kuwait 2.0) |
-| School-age population | 20% of total | NCSI/Oman Observer: 710K students out of ~3.5M national population |
-| Current schools in Muscat | ~330 | Estimated from government + private school counts |
-| Students per school (current) | 900 | Derived: ~300,000 students ÷ 330 schools |
-| Quality target | 600 students/school | UNESCO quality benchmark for class sizes |
-| Teacher:student ratio target | 15:1 | UNESCO recommended ratio |
+| Muscat hospital beds | ~2,500 | Estimated from national total and major Muscat hospitals |
+| Planned bed additions | 400 by 2028 | Based on announced hospital construction projects |
+| WHO beds benchmark | 3.0 per 1,000 | WHO planning standard |
+| GCC average beds | 2.0 per 1,000 | Regional comparison point |
+| School-age population | 20% of total | Public reporting on student share |
+| Current schools in Muscat | ~330 | Estimated from government and private schools |
+| Students per school (current) | 900 | Derived from enrollment and school count |
+| Quality target | 600 students/school | Planning-quality benchmark |
+| Teacher:student ratio target | 15:1 | UNESCO-oriented quality target |
+| Effective Muscat water capacity | 280 MLD | Estimated effective supply serving Muscat |
+| Planned water addition | 300 MLD by 2025 | Al Ghubrah 3 planning assumption |
+| Per-capita water use | 180 L/day | Planning assumption from public reporting |
+| Water safety factor | 1.15 | Reserve margin for planning |
+| Desalination capex proxy | USD 1M per MLD | Indicative cost framing only |
 
 ---
 
-## 3. Calculation Methodology
+## 5. Population Projection Methodology
 
-### Population Projection
+Population is projected using a compound annual growth model:
 
-Compound annual growth model:
-
-```
-P(t) = P(2024) × (1 + r)^(t - 2024)
+```text
+P(t) = P(2024) x (1 + r)^(t - 2024)
 ```
 
 Where:
-- `P(2024)` = 1,499,549 (NCSI baseline)
-- `r` = annual growth rate (varies by scenario)
-- `t` = target year (2024–2040)
 
-**Why this method:** Simple exponential growth is appropriate for 16-year projections when the growth rate is the primary variable. More complex models (cohort-component) would require age-structure data unavailable at the governorate level. The three-scenario approach captures uncertainty without false precision.
+- `P(2024)` = 1,499,549
+- `r` = annual growth rate
+- `t` = target year from 2024 to 2040
 
-### Healthcare Demand
+Scenarios:
 
-```
-Beds_needed(t) = P(t) / 1000 × benchmark_rate
+- `Low Growth` at 1.5%
+- `Base Case` at 2.5%
+- `High Growth` at 4.0%
+
+This method was chosen because it is transparent, reproducible, and appropriate for a scenario-planning exercise. A cohort-component approach would require detailed age-specific fertility, mortality, and migration inputs that were not assembled at governorate level for this project.
+
+---
+
+## 6. Healthcare Methodology
+
+Healthcare demand is modeled as hospital beds required per 1,000 residents under two benchmarks:
+
+- WHO benchmark: 3.0 beds per 1,000
+- GCC comparison: 2.0 beds per 1,000
+
+Formulas:
+
+```text
+Beds_needed(t) = Population(t) / 1000 x benchmark_rate
 Gap(t) = Beds_needed(t) - Capacity(t)
 ```
 
-Capacity increases by 400 beds in 2028 (planned construction), then remains flat — a conservative assumption that highlights the investment needed.
-
-### Education Demand
-
-```
-Students(t) = P(t) × 0.20  (school-age share)
-Schools_needed(t) = Students(t) / target_density
-Teacher_gap(t) = Students(t) / target_ratio - current_teachers
-```
-
-### Sensitivity Analysis
-
-Sweeps growth rate from 0.5% to 5.5% in 0.5% increments, computing all metrics at each rate. Visualized as bar charts in the interactive model.
+Current Muscat capacity is estimated at 2,500 beds. The model adds 400 beds from 2028 onward, then holds capacity flat. Because current capacity is already below benchmark demand, healthcare enters the horizon with an existing deficit.
 
 ---
 
-## 4. Reproduction Instructions
+## 7. Education Methodology
 
-### Prerequisites
-- Python 3.10+
-- pip
+Education demand is modeled from total population using a fixed school-age share, then converted into school and teacher requirements.
 
-### Setup
-```bash
-git clone https://github.com/abdullah-aljunaibi/codestacker-2026-data-analytics.git
-cd codestacker-2026-data-analytics
-pip install -r requirements.txt
+Formulas:
+
+```text
+Students(t) = Population(t) x 0.20
+Schools_needed_current_density = Students(t) / 900
+Schools_needed_quality = Students(t) / 600
+Teachers_needed_quality = Students(t) / 15
+Teacher_gap = Teachers_needed_quality - Current_teachers
 ```
 
-### Run the Interactive Model
+Current capacity is represented as 330 schools at roughly 900 students per school, or about 297,000 students. The model reports needs under both current density and a stronger quality target.
+
+---
+
+## 8. Water Methodology
+
+Water and utilities demand is modeled as domestic desalinated water demand in million liters per day (MLD), compared with effective Muscat supply.
+
+Formulas:
+
+```text
+Demand_MLD(t) = Population(t) x per_capita_lpd x safety_factor / 1,000,000
+Gap_MLD(t) = Demand_MLD(t) - Capacity_MLD(t)
+```
+
+Key assumptions:
+
+- Effective Muscat supply in 2024: 280 MLD
+- Planned addition from 2025: 300 MLD
+- Per-capita planning assumption: 180 liters/day
+- Safety factor: 1.15
+- WHO minimum reference: 100 liters/day
+- Gulf urban comparison range: 250 to 350 liters/day
+
+The planned addition raises modeled capacity to 580 MLD. Under the base case that keeps Muscat in surplus through 2040, while high growth effectively exhausts the reserve.
+
+---
+
+## 9. Sensitivity Analysis Methodology
+
+The population script sweeps annual growth rates from 0.5% to 5.0% in 0.5-point increments and calculates the implied 2040 population at each rate. The result is exported as `notebooks/growth_sensitivity.png`.
+
+This is included because small changes in annual growth compound materially over 16 years, especially in a migration-sensitive city such as Muscat.
+
+---
+
+## 10. Gap Analysis Logic
+
+Each sector is reported as a gap between modeled demand and available capacity:
+
+- Healthcare: beds required minus beds available
+- Education: schools and teachers required minus current supply
+- Water: MLD demand minus desalination capacity
+
+This makes the outputs decision-oriented. The model is designed to estimate additional capacity requirements, not just future demand totals.
+
+---
+
+## 11. Data Pipeline Description
+
+The repository uses a simple script-to-JSON-to-dashboard pipeline.
+
+### Step 1: Population analysis
+
+`notebooks/population_projection.py`:
+
+- Defines historical reference points
+- Applies growth scenarios
+- Exports `data/population_projections.json`
+- Exports projection and sensitivity charts
+
+### Step 2: Infrastructure analysis
+
+`notebooks/infrastructure_analysis.py`:
+
+- Loads `data/population_projections.json`
+- Computes healthcare, education, and water results
+- Exports `data/infrastructure_analysis.json`
+- Exports sector charts to `notebooks/`
+
+### Step 3: Source metadata
+
+`data/sources.json` stores summarized source references and key values used across sectors.
+
+### Step 4: Dashboard layer
+
+`app.py` reads the JSON outputs and renders the interactive Streamlit interface.
+
+---
+
+## 12. Model Validation Approach
+
+Validation is implemented through the automated test suite in `tests/`. The repository currently includes **19 tests** that check:
+
+- Baseline population integrity
+- Growth formula correctness
+- Relative ordering of scenarios
+- Healthcare demand calculations
+- Education demand formulas
+- Water demand and capacity calculations
+- Presence of all expected sectors in JSON outputs
+- Successful execution of both analysis scripts
+- Creation of the expected output files
+
+This is software-style validation: it verifies internal consistency, expected outputs, and reproducibility of the pipeline.
+
+---
+
+## 13. Reproduction Instructions
+
+### Prerequisites
+
+- Python 3.12 recommended
+- `pip`
+
+### Install dependencies
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+```
+
+### Run the analysis pipeline
+
+```bash
+python3 notebooks/population_projection.py
+python3 notebooks/infrastructure_analysis.py
+```
+
+### Run the dashboard
+
 ```bash
 streamlit run app.py
 ```
-Opens at `http://localhost:8501`. Use the sidebar sliders to adjust assumptions.
 
-### Run the Analysis Scripts
+### Run tests
+
 ```bash
-python3 notebooks/population_projection.py    # Generates projection charts
-python3 notebooks/infrastructure_analysis.py  # Generates infrastructure charts
+python3 -m pytest tests/ -v
 ```
 
-### Output Files
-- `data/population_projections.json` — All projection data
-- `data/infrastructure_analysis.json` — Healthcare + education analysis
-- `notebooks/*.png` — Static charts
-- `app.py` — Interactive Streamlit dashboard
+### Validate Streamlit app syntax
+
+```bash
+python3 -c "import ast; ast.parse(open('app.py').read()); print('Streamlit syntax OK')"
+```
 
 ---
 
-## 5. Limitations
+## 14. Output Artifacts
 
-1. **Population model simplicity:** Exponential growth doesn't capture age-structure transitions, which matter for education demand specifically.
-2. **Muscat bed count is estimated:** No official governorate-level bed count was found; we derived from national data and known hospital capacities.
-3. **Static capacity:** We only model announced bed additions (400 by 2028). Actual government investment may differ.
-4. **Expat volatility:** Expat population (61% of Muscat) is highly sensitive to economic cycles and visa policies — a risk not fully captured in smooth growth rates.
-5. **Education data gaps:** School counts by governorate are estimated; official NCSI data at governorate level was not publicly accessible.
+Generated data files:
+
+- `data/population_projections.json`
+- `data/infrastructure_analysis.json`
+- `data/sources.json`
+
+Generated charts:
+
+- `notebooks/population_projection.png`
+- `notebooks/growth_sensitivity.png`
+- `notebooks/healthcare_analysis.png`
+- `notebooks/education_analysis.png`
+- `notebooks/water_analysis.png`
+
+Primary application:
+
+- `app.py`
+
+---
+
+## 15. Limitations
+
+1. **Population model simplicity:** Exponential growth does not capture age-structure transitions or migration shocks explicitly.
+2. **Infrastructure estimates:** Several Muscat-level counts are inferred from national totals and major facility references.
+3. **Static future capacity:** Only explicitly modeled additions are included.
+4. **Water simplification:** The water model does not separate domestic, industrial, and seasonal peak loads.
+5. **Education simplification:** The school-age share is held constant through 2040.
+6. **Benchmark interpretation:** WHO, UNESCO, and regional benchmarks are useful planning references but not complete service-quality measures.
+
+---
+
+## 16. Practical Interpretation
+
+The model supports a clear conclusion: Muscat's base-case growth path is enough to create major infrastructure requirements by 2040. Healthcare and education require structural expansion from an already constrained baseline, while water depends on timely execution of planned desalination capacity to maintain resilience.
 
 ---
 
