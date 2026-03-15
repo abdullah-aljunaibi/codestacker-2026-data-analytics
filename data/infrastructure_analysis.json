@@ -77,5 +77,46 @@
         "breakpoint": 2024
       }
     }
+  },
+  "water": {
+    "current_capacity_mld": 280,
+    "planned_additions_mld": 300,
+    "total_after_expansion_mld": 580,
+    "assumptions": {
+      "per_capita_lpd": 180,
+      "safety_factor": 1.15,
+      "who_minimum_lpd": 100,
+      "gulf_standard_lpd": [
+        250,
+        350
+      ],
+      "investment_per_mld_usd": 1000000
+    },
+    "scenarios": {
+      "Base Case": {
+        "pop_2040": 2226088,
+        "demand_2040_mld": 460.8,
+        "capacity_2040_mld": 580,
+        "gap_2040_mld": -119.2,
+        "breakpoint_year": 2024,
+        "investment_needed_usd": 0
+      },
+      "High Growth": {
+        "pop_2040": 2808627,
+        "demand_2040_mld": 581.4,
+        "capacity_2040_mld": 580,
+        "gap_2040_mld": 1.4,
+        "breakpoint_year": 2024,
+        "investment_needed_usd": 1385789
+      },
+      "Low Growth": {
+        "pop_2040": 1902906,
+        "demand_2040_mld": 393.9,
+        "capacity_2040_mld": 580,
+        "gap_2040_mld": -186.1,
+        "breakpoint_year": 2024,
+        "investment_needed_usd": 0
+      }
+    }
   }
 }

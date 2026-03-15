@@ -38,6 +38,12 @@ students_per_school = st.sidebar.slider("Students per School (current)", 400, 12
 quality_target = st.sidebar.slider("Quality Target (students/school)", 300, 800, 600, 50)
 teacher_ratio = st.sidebar.slider("Target Teacher:Student Ratio", 10, 30, 15, 1)
 
+st.sidebar.subheader("Water & Utilities")
+water_capacity_current = st.sidebar.number_input("Current Water Capacity (MLD)", value=280, step=10)
+water_per_capita = st.sidebar.slider("Per-Capita Water Use (L/day)", 100, 400, 180, 5)
+water_planned_additions = st.sidebar.number_input("Planned Capacity Additions (MLD, by 2025)", value=300, step=10)
+water_safety_factor = st.sidebar.slider("Peak/Loss Safety Factor", 1.00, 1.50, 1.15, 0.01)
+
 # ── COMPUTE PROJECTIONS ──
 years = list(range(2024, 2041))
 n_years = len(years)
@@ -187,38 +193,98 @@ with col2:
     st.markdown(f"**Quality target:** {quality_target} students/school")
 
 # ── SECTION 4: SENSITIVITY ANALYSIS ──
+st.header("💧 Water & Utilities")
+
+water_capacity = [water_capacity_current if y < 2025 else water_capacity_current + water_planned_additions for y in years]
+
+col1, col2 = st.columns(2)
+
+fig4 = go.Figure()
+for name in projections:
+    demand_mld = [p * water_per_capita * water_safety_factor / 1_000_000 for p in projections[name]]
+    fig4.add_trace(go.Scatter(
+        x=years, y=demand_mld, name=f"{name} demand",
+        line=dict(color=scenario_colors[name], width=2),
+        hovertemplate="%{x}: %{y:.1f} MLD<extra></extra>"
+    ))
+fig4.add_trace(go.Scatter(
+    x=years, y=water_capacity, name="Capacity (current + planned)",
+    line=dict(color="black", width=3, dash="dash"),
+    hovertemplate="%{x}: %{y:.1f} MLD<extra></extra>"
+))
+fig4.add_trace(go.Scatter(
+    x=years, y=water_capacity, fill='tozeroy', fillcolor='rgba(76,175,80,0.08)',
+    line=dict(color='rgba(0,0,0,0)'), showlegend=False, hoverinfo='skip'
+))
+fig4.update_layout(
+    title="Water Demand vs Desalination Capacity",
+    xaxis_title="Year", yaxis_title="Water Demand (MLD)",
+    hovermode="x unified", height=400
+)
+col1.plotly_chart(fig4, use_container_width=True)
+
+with col2:
+    st.subheader("Water Gap by 2040")
+    final_water_capacity = water_capacity_current + water_planned_additions
+    for name in projections:
+        demand_2040 = projections[name][-1] * water_per_capita * water_safety_factor / 1_000_000
+        water_gap = demand_2040 - final_water_capacity
+        investment_needed = max(water_gap, 0) * 1_000_000
+
+        bp = "—"
+        for i, y in enumerate(years):
+            demand_year = projections[name][i] * water_per_capita * water_safety_factor / 1_000_000
+            if demand_year > water_capacity[i]:
+                bp = str(y)
+                break
+
+        st.markdown(
+            f"**{name}:** {demand_2040:.1f} MLD needed → "
+            f"**gap: {water_gap:+.1f} MLD** (exceeds capacity: {bp}, investment: ${investment_needed/1e6:,.1f}M)"
+        )
+
+    st.markdown("---")
+    st.markdown(f"**Current effective capacity:** {water_capacity_current:.0f} MLD")
+    st.markdown("**Reference range:** WHO minimum 100 L/day, Gulf standard 250-350 L/day")
+
+# ── SECTION 5: SENSITIVITY ANALYSIS ──
 st.header("🔄 Sensitivity Analysis")
 st.markdown("How does the growth rate affect 2040 outcomes?")
 
 test_rates = np.arange(0.005, 0.06, 0.005)
-fig4 = make_subplots(rows=1, cols=3,
-                     subplot_titles=["Population 2040", "Bed Gap 2040", "School Gap 2040"])
+fig5 = make_subplots(rows=1, cols=4,
+                     subplot_titles=["Population 2040", "Bed Gap 2040", "School Gap 2040", "Water Gap 2040"])
 
 pops = [baseline_pop * (1 + r) ** 16 for r in test_rates]
 bed_gaps = [p / 1000 * beds_benchmark - (beds_current + beds_planned) for p in pops]
 school_gaps = [int(p * school_age_pct / quality_target) - schools_current for p in pops]
+water_gaps = [p * water_per_capita * water_safety_factor / 1_000_000 - (water_capacity_current + water_planned_additions) for p in pops]
 labels = [f"{r*100:.1f}%" for r in test_rates]
 
 bar_colors = ['#4CAF50' if r < 0.02 else '#2196F3' if r < 0.035 else '#FF5722' for r in test_rates]
 
-fig4.add_trace(go.Bar(x=labels, y=[p/1e6 for p in pops], marker_color=bar_colors, showlegend=False), row=1, col=1)
-fig4.add_trace(go.Bar(x=labels, y=bed_gaps, marker_color=bar_colors, showlegend=False), row=1, col=2)
-fig4.add_trace(go.Bar(x=labels, y=school_gaps, marker_color=bar_colors, showlegend=False), row=1, col=3)
+fig5.add_trace(go.Bar(x=labels, y=[p/1e6 for p in pops], marker_color=bar_colors, showlegend=False), row=1, col=1)
+fig5.add_trace(go.Bar(x=labels, y=bed_gaps, marker_color=bar_colors, showlegend=False), row=1, col=2)
+fig5.add_trace(go.Bar(x=labels, y=school_gaps, marker_color=bar_colors, showlegend=False), row=1, col=3)
+fig5.add_trace(go.Bar(x=labels, y=water_gaps, marker_color=bar_colors, showlegend=False), row=1, col=4)
 
-fig4.update_layout(height=400, title_text="Sensitivity to Annual Growth Rate")
-fig4.update_xaxes(title_text="Growth Rate", row=1, col=2)
-fig4.update_yaxes(title_text="Millions", row=1, col=1)
-fig4.update_yaxes(title_text="Bed Deficit", row=1, col=2)
-fig4.update_yaxes(title_text="Schools Needed", row=1, col=3)
+fig5.update_layout(height=400, title_text="Sensitivity to Annual Growth Rate")
+fig5.update_xaxes(title_text="Growth Rate", row=1, col=2)
+fig5.update_yaxes(title_text="Millions", row=1, col=1)
+fig5.update_yaxes(title_text="Bed Deficit", row=1, col=2)
+fig5.update_yaxes(title_text="Schools Needed", row=1, col=3)
+fig5.update_yaxes(title_text="MLD Gap", row=1, col=4)
 
-st.plotly_chart(fig4, use_container_width=True)
+st.plotly_chart(fig5, use_container_width=True)
 
-# ── SECTION 5: KEY FINDINGS ──
+# ── SECTION 6: KEY FINDINGS ──
 st.header("📋 Key Findings")
 
 base_pop_2040 = projections["Base Case"][-1]
 base_bed_gap = base_pop_2040 / 1000 * beds_benchmark - (beds_current + beds_planned)
 base_school_gap = int(base_pop_2040 * school_age_pct / quality_target) - schools_current
+base_water_demand = base_pop_2040 * water_per_capita * water_safety_factor / 1_000_000
+base_water_gap = base_water_demand - (water_capacity_current + water_planned_additions)
 
 st.markdown(f"""
 | Metric | 2024 (Current) | 2040 Base Case | Gap |
@@ -227,7 +293,8 @@ st.markdown(f"""
 | **Hospital Beds** | {beds_current:,} | {int(base_pop_2040/1000*beds_benchmark):,} needed | **{int(base_bed_gap):,} deficit** |
 | **Schools** | {schools_current} | {int(base_pop_2040*school_age_pct/quality_target)} needed | **+{base_school_gap} new** |
 | **Teachers** | ~{int(baseline_pop*school_age_pct/20):,} | {int(base_pop_2040*school_age_pct/teacher_ratio):,} needed | +{int(base_pop_2040*school_age_pct/teacher_ratio - baseline_pop*school_age_pct/20):,} |
+| **Water Capacity** | {water_capacity_current:.0f} MLD | {base_water_demand:.1f} MLD needed | **{base_water_gap:+.1f} MLD** |
 """)
 
 st.markdown("---")
-st.caption("Data sources: NCSI Oman, WHO, UNESCO, Oman Observer, Times of Oman, ONA | Built for CodeStacker 2026")
+st.caption("Data sources: NCSI Oman, WHO, UNESCO, Oman Observer, Times of Oman, ONA, PAEW, OPWP | Built for CodeStacker 2026")

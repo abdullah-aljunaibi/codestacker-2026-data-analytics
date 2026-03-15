@@ -51,5 +51,22 @@
       "Oman Observer (Aug 2024): 46 international schools, 61,704 students, 21 in Muscat",
       "Benchmark: UNESCO recommends 20:1 student-teacher ratio"
     ]
+  },
+  "water": {
+    "muscat_effective_capacity_mld_2024": 280,
+    "barka_capacity_mld": 120,
+    "al_ghubrah_capacity_mld_2022_upgrade": 191,
+    "sharqiyah_capacity_mld": 80,
+    "al_ghubrah_3_iwp_planned_mld": 300,
+    "per_capita_consumption_lpd": 180,
+    "who_minimum_lpd": 100,
+    "gulf_standard_lpd_range": [250, 350],
+    "sources": [
+      "PAEW annual reports: Oman average domestic consumption around 180 liters/person/day",
+      "OPWP 7-year statements: Barka, Al Ghubrah, and Sharqiyah desalination capacities; Muscat effective supply estimated at ~280 MLD",
+      "Al Ghubrah 3 Independent Water Project announcements: planned 300 MLD expansion from 2025",
+      "WHO minimum domestic water access benchmark: 100 liters/person/day",
+      "Regional comparison: Gulf urban demand commonly 250-350 liters/person/day"
+    ]
   }
 }

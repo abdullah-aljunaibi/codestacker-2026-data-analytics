@@ -1,5 +1,5 @@
 """
-Phase 3: Infrastructure Demand Analysis — Healthcare + Education
+Phase 3: Infrastructure Demand Analysis — Healthcare + Education + Water
 Muscat Governorate to 2040
 """
 import json
@@ -264,6 +264,121 @@ plt.tight_layout()
 plt.savefig('notebooks/education_analysis.png', dpi=150, bbox_inches='tight')
 print("Chart saved: notebooks/education_analysis.png")
 
+# ============================================================
+# SECTOR 3: WATER & UTILITIES
+# ============================================================
+print("\n" + "=" * 60)
+print("WATER & UTILITIES ANALYSIS — Desalinated Water Supply")
+print("=" * 60)
+
+# Muscat-focused water supply assumptions
+# Barka (2006): 120 MLD, Al Ghubrah (2022 upgrade): 191 MLD, Sharqiyah: 80 MLD
+# Not all output serves Muscat exclusively; assumed effective Muscat supply is ~280 MLD
+# Planned addition: Al Ghubrah 3 IWP adds 300 MLD from 2025 onward
+MUSCAT_WATER_CAPACITY_CURRENT = 280
+MUSCAT_WATER_CAPACITY_YEAR = 2024
+PLANNED_WATER_ADDITION = 300
+PLANNED_WATER_YEAR = 2025
+WATER_PER_CAPITA_LPD = 180
+WHO_MIN_WATER_LPD = 100
+GULF_STANDARD_LOW_LPD = 250
+GULF_STANDARD_HIGH_LPD = 350
+WATER_SAFETY_FACTOR = 1.15
+DESAL_COST_PER_MLD_USD = 1_000_000
+
+print(f"Current effective Muscat water capacity: {MUSCAT_WATER_CAPACITY_CURRENT} MLD ({MUSCAT_WATER_CAPACITY_YEAR})")
+print(f"Planned additions: +{PLANNED_WATER_ADDITION} MLD by {PLANNED_WATER_YEAR}")
+print(f"Post-expansion capacity: {MUSCAT_WATER_CAPACITY_CURRENT + PLANNED_WATER_ADDITION} MLD")
+print(
+    f"Per-capita use: {WATER_PER_CAPITA_LPD} L/day | "
+    f"WHO minimum: {WHO_MIN_WATER_LPD} | Gulf standard: {GULF_STANDARD_LOW_LPD}-{GULF_STANDARD_HIGH_LPD}"
+)
+print(f"Demand formula: Population × {WATER_PER_CAPITA_LPD} L/day × {WATER_SAFETY_FACTOR:.2f} safety factor")
+print()
+
+water_capacity = []
+for y in years:
+    if y < PLANNED_WATER_YEAR:
+        water_capacity.append(MUSCAT_WATER_CAPACITY_CURRENT)
+    else:
+        water_capacity.append(MUSCAT_WATER_CAPACITY_CURRENT + PLANNED_WATER_ADDITION)
+
+water_data = {"years": years, "capacity_mld": water_capacity}
+water_results = {}
+
+for name in scenarios:
+    pop = scenarios[name]
+    demand_mld = [p * WATER_PER_CAPITA_LPD * WATER_SAFETY_FACTOR / 1_000_000 for p in pop]
+    water_data[f"{name}_demand_mld"] = demand_mld
+
+    demand_2040 = demand_mld[-1]
+    final_cap = water_capacity[-1]
+    gap_2040 = demand_2040 - final_cap
+    investment_needed = max(gap_2040, 0) * DESAL_COST_PER_MLD_USD
+
+    breakpoint = None
+    for i, y in enumerate(years):
+        if demand_mld[i] > water_capacity[i] and breakpoint is None:
+            breakpoint = y
+
+    water_results[name] = {
+        "pop_2040": pop[-1],
+        "demand_2040_mld": round(demand_2040, 1),
+        "capacity_2040_mld": final_cap,
+        "gap_2040_mld": round(gap_2040, 1),
+        "breakpoint_year": breakpoint,
+        "investment_needed_usd": int(round(max(gap_2040, 0) * DESAL_COST_PER_MLD_USD)),
+    }
+
+    print(f"  {name}:")
+    print(f"    Water demand 2040: {demand_2040:.1f} MLD")
+    print(f"    Capacity gap 2040: {gap_2040:+.1f} MLD")
+    if breakpoint:
+        print(f"    ⚠️  Demand exceeds capacity in {breakpoint}")
+    else:
+        print("    Capacity remains above demand through 2040")
+    print(f"    Indicative investment needed: ${investment_needed/1e6:,.1f}M")
+    print()
+
+# === CHART: Water ===
+fig3, (ax5, ax6) = plt.subplots(1, 2, figsize=(16, 7))
+
+for name in scenarios:
+    ax5.plot(
+        years,
+        water_data[f"{name}_demand_mld"],
+        label=f"{name} demand",
+        color=colors[name],
+        linewidth=2,
+    )
+
+ax5.plot(years, water_capacity, 'k--', linewidth=2.5, label='Current + planned capacity')
+ax5.fill_between(years, 0, water_capacity, alpha=0.08, color='green')
+ax5.set_title('Water Demand vs Desalination Capacity', fontsize=12, fontweight='bold')
+ax5.set_xlabel('Year')
+ax5.set_ylabel('Water Demand (MLD)')
+ax5.legend(fontsize=9)
+ax5.grid(True, alpha=0.3)
+ax5.set_xlim(2024, 2040)
+
+water_names = list(water_results.keys())
+water_gaps = [water_results[n]["gap_2040_mld"] for n in water_names]
+bar_colors = [colors[n] for n in water_names]
+ax6.bar(water_names, water_gaps, color=bar_colors)
+ax6.axhline(y=0, color='black', linewidth=1)
+ax6.set_title('Water Capacity Gap by 2040', fontsize=12, fontweight='bold')
+ax6.set_ylabel('Gap (MLD)')
+ax6.grid(True, axis='y', alpha=0.3)
+
+for i, gap in enumerate(water_gaps):
+    label_offset = 8 if gap >= 0 else -12
+    va = 'bottom' if gap >= 0 else 'top'
+    ax6.text(i, gap + label_offset, f'{gap:+.1f}', ha='center', va=va, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.savefig('notebooks/water_analysis.png', dpi=150, bbox_inches='tight')
+print("Chart saved: notebooks/water_analysis.png")
+
 # === SAVE ALL RESULTS ===
 all_results = {
     "healthcare": {
@@ -279,6 +394,19 @@ all_results = {
         "school_age_share": SCHOOL_AGE_SHARE,
         "benchmarks": {"current_density": STUDENTS_PER_SCHOOL, "quality_target": IDEAL_STUDENTS_PER_SCHOOL},
         "scenarios": edu_results,
+    },
+    "water": {
+        "current_capacity_mld": MUSCAT_WATER_CAPACITY_CURRENT,
+        "planned_additions_mld": PLANNED_WATER_ADDITION,
+        "total_after_expansion_mld": MUSCAT_WATER_CAPACITY_CURRENT + PLANNED_WATER_ADDITION,
+        "assumptions": {
+            "per_capita_lpd": WATER_PER_CAPITA_LPD,
+            "safety_factor": WATER_SAFETY_FACTOR,
+            "who_minimum_lpd": WHO_MIN_WATER_LPD,
+            "gulf_standard_lpd": [GULF_STANDARD_LOW_LPD, GULF_STANDARD_HIGH_LPD],
+            "investment_per_mld_usd": DESAL_COST_PER_MLD_USD,
+        },
+        "scenarios": water_results,
     },
 }
 
