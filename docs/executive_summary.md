@@ -103,39 +103,17 @@ The high-growth scenario is therefore useful as a stress test. It shows which sy
 
 ---
 
-## Prioritized Recommendations
+## Recommended Actions
 
-### 1. Expand healthcare capacity first
+1. **Healthcare — Accelerate hospital construction.** The current pipeline of 400 beds is insufficient. Muscat needs an additional **2,500–5,000 beds** by 2040 depending on growth. Prioritize PPP models to attract private hospital investment, with phased targets tied to population thresholds.
 
-Healthcare has the clearest immediate deficit. Muscat should accelerate hospital capacity through a mix of public delivery and PPP mechanisms, with phased targets tied to population thresholds rather than one-off project announcements.
+2. **Education — Launch a school-building program tied to population data.** Plan for **10–25 new schools per year** through 2040, with priority in high-growth wilayats (Bawshar, Seeb). Simultaneously recruit and train 1,000+ teachers annually, beginning well before facilities open.
 
-### 2. Lock in a long-range education build program
+3. **Water — Protect resilience margins.** Monitor Al Ghubrah 3 delivery milestones and prepare contingent demand-management measures. The base-case reserve depends on planned capacity arriving on schedule.
 
-Education demand grows steadily and predictably. The right response is a rolling school pipeline, especially in high-growth wilayats, paired with teacher recruitment and training targets that begin well before facilities open.
+4. **Cross-sector — Establish a dynamic infrastructure planning unit.** Link NCSI population data directly to infrastructure capacity dashboards. Use scenario-based planning to trigger investment thresholds automatically rather than reacting to shortages after they occur.
 
-### 3. Protect water resilience margins
-
-Water performs relatively well in the base case only because planned capacity is assumed to arrive. Policymakers should monitor delivery milestones, preserve redundancy, and prepare contingent demand-management measures in case growth or consumption runs above assumptions.
-
-### 4. Use one planning dashboard across sectors
-
-Population-led planning should not sit in sector silos. A shared dashboard linked to updated NCSI figures would allow trigger-based investment decisions, helping ministries move from reactive expansion to staged, evidence-based planning.
-
-### 5. Prioritize workforce and operating readiness
-
-Infrastructure delivery is not just a construction issue. Hospital beds need clinicians, schools need teachers, and desalination plants need operating and maintenance capability. Workforce planning should therefore be treated as a first-order infrastructure dependency.
-
----
-
-## Three Recommended Actions
-
-1. **Healthcare — Accelerate hospital construction.** The current pipeline of 400 beds is insufficient. Muscat needs an additional **2,500–5,000 beds** by 2040 depending on growth. Prioritize PPP models to attract private hospital investment.
-
-2. **Education — Launch a school-building program tied to population data.** Plan for **10–25 new schools per year** through 2040, with priority in high-growth wilayats (Bawshar, Seeb). Simultaneously recruit and train 1,000+ teachers annually.
-
-3. **Establish a dynamic infrastructure planning unit.** Link NCSI population data directly to infrastructure capacity dashboards. Use scenario-based planning (as modeled here) to trigger investment thresholds automatically rather than reacting to shortages after they occur.
-
-These original actions remain valid, but the water sector evidence adds an important refinement: some infrastructure systems can be stabilized with timely expansion, while others require structural catch-up. That distinction should shape capital allocation and policy urgency.
+5. **Workforce readiness.** Hospital beds need clinicians, schools need teachers, and desalination plants need operators. Workforce planning should be treated as a first-order infrastructure dependency across all sectors.
 
 ---
 

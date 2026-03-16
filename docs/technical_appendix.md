@@ -20,7 +20,7 @@ The model is designed for strategic planning and challenge submission purposes. 
 | NCSI (via OmanQ, Mar 2025) | Muscat pop 1,499,549; Omanis 584,092 (39%) | https://omanq.com/news/muscats-population-surpasses-1-5-million/ |
 | Wikipedia / NCSI | Muscat 2022 population: ~1.72M | https://en.wikipedia.org/wiki/Muscat |
 | Oman News Agency (Aug 2024) | 92 hospitals nationally, 7,691 beds | https://omannews.gov.om/topics/en/79/show/118135/ |
-| Grokipedia / MoH | MoH manages 50 hospitals with 5,024 beds (2023) | https://grokipedia.com/page/List_of_hospitals_in_Oman |
+| MoH Annual Health Report (2023) | MoH manages 50 hospitals with 5,024 beds nationally | https://www.moh.gov.om |
 | Times of Oman / Oman Observer (May 2023) | 11 new hospitals under construction | https://www.omanobserver.om/article/1136940/ |
 | Oman Observer (Mar 2023) | 710,000 students nationally = 20% of population | https://www.omanobserver.om/article/1133871/ |
 | Oman Observer (Aug 2024) | 46 international schools, 61,704 students, 21 in Muscat | https://www.omanobserver.om/article/1157275/ |

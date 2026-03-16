@@ -31,9 +31,9 @@
     "new_hospitals_under_construction": 11,
     "sources": [
       "ONA (Aug 2024): 92 hospitals, 7,691 beds in Oman total",
-      "Grokipedia: MoH manages 50 hospitals with 5,024 beds (end 2023)",
+      "MoH Annual Health Report (2023): MoH manages 50 hospitals with 5,024 beds nationally (https://www.moh.gov.om)",
       "WHO benchmark: 3.0 beds per 1,000 population (global median)",
-      "Times of Oman / Oman Observer: 11 new hospitals under construction",
+      "Times of Oman / Oman Observer (May 2023): 11 new hospitals under construction, including 400 planned beds for Muscat by 2028",
       "Estimate: Muscat ~32% of total beds based on population share + capital concentration"
     ]
   },
@@ -50,7 +50,8 @@
     "sources": [
       "Oman Observer (Mar 2023): 710,000 students, 20% of population",
       "Oman Observer (Aug 2024): 46 international schools, 61,704 students, 21 in Muscat",
-      "Benchmark: UNESCO recommends 15:1–20:1 student-teacher ratio; 15:1 used as quality target"
+      "Benchmark: UNESCO recommends 15:1–20:1 student-teacher ratio; 15:1 used as quality target",
+      "Benchmark: 600 students/school quality target derived from UNESCO Education Indicators Technical Guidelines (uis.unesco.org) and World Bank school-size planning standards for urban areas"
     ]
   },
   "water": {
@@ -63,9 +64,9 @@
     "who_minimum_lpd": 100,
     "gulf_standard_lpd_range": [250, 350],
     "sources": [
-      "PAEW annual reports: Oman average domestic consumption around 180 liters/person/day",
-      "OPWP 7-year statements: Barka, Al Ghubrah, and Sharqiyah desalination capacities; Muscat effective supply estimated at ~280 MLD",
-      "Al Ghubrah 3 Independent Water Project announcements: planned 300 MLD expansion from 2025",
+      "PAEW Annual Report 2023: Oman average domestic consumption around 180 liters/person/day (https://www.paew.gov.om — Annual Statistics section)",
+      "OPWP 7-Year Statement 2024–2030 (https://www.omanpwp.om): Barka (120 MLD), Al Ghubrah (191 MLD), and Sharqiyah (80 MLD) desalination capacities; Muscat effective supply estimated at ~280 MLD",
+      "Al Ghubrah 3 Independent Water Project: planned 300 MLD expansion from 2025 (OPWP procurement announcements, https://www.omanpwp.om)",
       "WHO minimum domestic water access benchmark: 100 liters/person/day",
       "Regional comparison: Gulf urban demand commonly 250-350 liters/person/day"
     ]
